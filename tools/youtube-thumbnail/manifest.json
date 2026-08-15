@@ -1,0 +1,11 @@
+{
+    "name": "Youtube Thumbnail Tool",
+    "description": "Find the largest thumbnail image for a youtube video, then open in a new tab",
+    "version": "1.0",
+    "manifest_version": 3,
+    "action": {},
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": ["activeTab"]
+}
