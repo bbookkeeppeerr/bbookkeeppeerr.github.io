@@ -1,0 +1,159 @@
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-space: #f4ece1;       /* Light ammonia cloud deck */
+    --surface: #eadaaf;        /* Light sandy zone */
+    --text-main: #3d312a;      /* Deep belt brown */
+    --text-muted: #7d6557;     /* Soft haze grey-brown */
+    --great-red-spot: #b63d27; /* Crimson storm accent */
+    --great-red-hover: #962f1c;/* Darker red spot active */
+    --belt-orange: #d48a37;    /* Equatorial orange banner */
+    --border-color: #cea589;   /* Atmospheric haze border */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-space: #0c090a;       /* Deep space vacuum */
+    --surface: #1e1511;        /* Dark brown Jovian belt shadow */
+    --text-main: #f0e6df;      /* Creamy cloud top white */
+    --text-muted: #bda393;     /* Muted storm dust */
+    --great-red-spot: #c94a32; /* Radiant Great Red Spot */
+    --great-red-hover: #e5624a;/* Glowing active storm */
+    --belt-orange: #bc7221;    /* Deep orange gas stripe */
+    --border-color: #4a3429;   /* Silhouette ring border */
+  }
+}
+
+/* Base Gas Giant Layout */
+html {
+  background-color: var(--bg-space);
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+}
+
+body {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Typography & Stripes */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--belt-orange);
+  line-height: 1.2;
+  margin-top: 2rem;
+}
+
+h1 {
+  border-bottom: 3px double var(--great-red-spot);
+  padding-bottom: 0.5rem;
+}
+
+a {
+  color: var(--great-red-spot);
+  text-decoration-underline-parenthetic: auto;
+}
+
+a:hover {
+  color: var(--great-red-hover);
+}
+
+mark {
+  background-color: var(--surface);
+  color: var(--great-red-spot);
+  padding: 0 0.2rem;
+}
+
+/* Callouts, Blockquotes & Code blocks */
+blockquote {
+  border-left: 4px solid var(--belt-orange);
+  background: var(--surface);
+  margin: 1.5rem 0;
+  padding: 0.5rem 1rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+code, pre {
+  font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+  background-color: var(--surface);
+  font-size: 0.9em;
+}
+
+code {
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+}
+
+/* Jovian Structural Elements */
+button, input[type="submit"], input[type="button"] {
+  background-color: var(--great-red-spot);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: var(--great-red-hover);
+}
+
+input, select, textarea {
+  background-color: var(--surface);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--belt-orange);
+}
+
+/* Alternating Cloud Bands (Tables) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--belt-orange);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+  opacity: 0.9;
+}
+
+hr {
+  border: 0;
+  border-top: 2px dashed var(--border-color);
+  margin: 2rem 0;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles.css">
+    <title>Chrome Extensions</title>
+</head>
+<body>
+    <article>
+        <h1>Our hero awakens</h1>
+        <p>In which our hero fights against the AI overreach of his day-to-day job to remember the simple joy of making something for themselves</p>
+        <p>When making things for myself I have some simple rules</p>
+        <h2>Use raw javascript when possible</h2>
+        <p>Most of my daily tasks involve typescript, between the transpiling from typescript to javascript, and the inevitable minimization afterwards that most websites will do by default, the raw javascript is a lot harder to decompile and read.</p>
+        <p>Quite frankly, I enjoyed when I could read a website that was doing something cool, look at the source and see how it did it, to try and figure out how I would do something similar. This is something that has been disappearing for a while, and since when I make these tools I'm not too concerned about whatever a business claims is good for it's search rank, I would rather pay it forward and start with the idea that someone might want to see how this works under the covers</p>
+        <p>(Some would say that I should have spent some time finding a css theme when investigating other peoples websites, but I didn't, and now that they've all turned into div soup from whatever standard library is to de-jour of the day, I'm not going to find it)</p>
+        <h2>Avoid a complex release pipeline</h2>
+        <p>So whilst I am actually a fan of things like eslint and prettier, if I need them for the local projects then it's probably overkill. I do have some formatting rules I keep to (which I get from my editor rather than a multi-step build proccess) and since I am not working with multiple people to get even the simplest thing running and co-ordinated, I want to try and do without</p>
+        <p>With all of that said, lets get started</p>
+        <h1>Youtube thumbnail viewer chrome extension</h1>
+        <p>Why this? I started drawing during the years of the great plague (i.e. covid). I'm still at the stage of copying things rather then coming up with things from my mind, and I do use youtube as a source of ideas.</p>
+        <p>Of course, it's easier if you can see the image in the entire screen, I could have tried and find an existing plugin, but I wanted to see if I could make my own</p>
+        <h2>VSCode setup</h2>
+        <p>Even though I'm not setting up a full release pipeline, I do have a couple of things installed to make vscode intellisense keep some level of sanity</p>
+        <p><a href="https://github.com/cezaraugusto/vscode-chrome-extension-manifest-json-schema">chrome manifest checker</a> makes sure that the manifest we make is valid</p>
+        <p><a href="https://eslint.org/">ESLint</a> just because I don't want to set up a full pipeline, I still like ESLint and having a seet of default rules makes things easier</p>
+        <h2>Implementation</h2>
+        <p>This is old ground obviously, so https://stackoverflow.com/questions/2068344/how-do-i-get-a-youtube-video-thumbnail-from-the-youtube-api described the 5 different possible urls that a video whould have for it's thumbnail. And yes one of the reasons I didn't just make a bookmark to convert the url is that there are 5 different possibilities, and I wanted to always get the highest res image I could</p>
+        <p>Start with the npm init to get the package.json, and create a manifest (this isn't my first plugin, so I had a simple manifest.json file already) - manifest definition can be seen on <a href="https://developer.chrome.com/docs/extensions/reference/manifest">Chrome manifest reference</a></p>
+        <p>The important part is adding the background.js link option in the manifest, that's where the code will be running.</p>
+        <p>chrome extensions have 3 different ways of running things - simplified below:</p>
+        <ul>
+            <li>popup - this is used if the extension itself has it's own unique window - I could have used this, but I didn't think I needed that, just wanted an action when I clicked on the extension button</li>
+            <li>context - runs within the web page itself, if I was manipulating the dom to add the button to the video, or if I needed to use an internally authed api to get the url path, this is what I would have used</li>
+            <li>background service worker - this runs as a service worker, it doesn't have access to the site + dom, but does have access to some top-level browser functionality (like tabs and their urls in this case). Script sections can only be triggered by events, which is fine for what I needed</li>
+        </ul>
+        <p>there are better descriptions on how chrome extensions service workers work in <a href="https://developer.chrome.com/docs/extensions/develop/concepts/service-workers">the official documentation</a></p>
+        <p>The actual code is in <a href="">background.js</a> file, but the important parts</p>
+        <ul>
+            <li>adding in @types/chrome as a devDependancy, and adding /// <reference types="chrome" /> as a comment at the top of the file so intellisense would work</li>
+            <li>chrome.action.onClicked.addListener() - this is the event that occurs when the extension icon is clicked, and it includes the current tab, which I could then get the url from</li>
+            <li>a sorted list of the image names and resolutions, so I could go through them in order and return the first one that returned successfully</li>
+        </ul>
+    <h1>Conclusion</h1>
+    <p>Obviously, there are plenty of youtube related helpers in the chrome app store, and I could have grabbed any one of them. There are external sites as well that would do it. And that's fine. You could even argue that I've not really completed this (it won't work for youtube shorts for example, which is something I try not to use anyway and block somewhat religiously). And yes I should make actual icons</p>
+    <p>But here's the thing - it doesn't really matter. The skill being exercised is how to make a tool to make a small part of what I need to do in the browser easier. This is something I used to enjoy doing for work (before 'just type it into claude, who needs to access the website anymore anyway' became the normal answer) - making small tools like this to make our lives easier.</p>
+    <p>Anyway, that's all for now</p>
+    </article>
+</body>
+</html>
