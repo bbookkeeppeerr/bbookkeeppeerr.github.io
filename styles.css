@@ -156,3 +156,12 @@ hr {
   border-top: 2px dashed var(--border-color);
   margin: 2rem 0;
 }
+
+footer {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+footer a {
+    color: inherit;
+}
