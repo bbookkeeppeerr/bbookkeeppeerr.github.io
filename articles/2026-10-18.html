@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Setup of some basic vscode extensions for web development"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Our hero sharpens his tools" />
+    <meta
+      property="og:description"
+      content="Setup of some basic vscode extensions for web development"
+    />
+    <meta
+      property="og:url"
+      content="https://bbookkeeppeerr.github.io/articles/2026-10-18.html"
+    />
+    <!-- remove when I make an image 
+        <meta property="og:image" content="filename450x450pixels.png">
+    -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Our hero sharpens his tools" />
+    <meta
+      name="twitter:description"
+      content="How to code a simple Youtube thumbnail chrome extension"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="/favicon.ico" />
+    <link
+      rel="canonical"
+      href="https://bbookkeeppeerr.github.io/articles/2026-10-18.html"
+    />
+    <title>Our hero sharpens his tools</title>
+  </head>
+
+  <body>
+    <article>
+      <h1>Improving my vscode setup</h1>
+      <p>
+        I'm not going to lie, it's been a while since I had to do raw html (my
+        normal day job involves using frameworks, react for the most part). Part
+        of doing this less polished method of webpage creation is to experiment
+        with going back to basics a bit more (and allow me to experiment a
+        little bit, instead of forcing me into the look that a normal static
+        site generator would do)
+      </p>
+      <p>
+        So yes, I'm writing this using vscode. In order to add some extra
+        valiation (including things that I didn't think about when making other
+        pages twenty years ago now) I'm experimenting with the following vscode
+        plugins
+      </p>
+      <h2>html-validate</h2>
+      <h3>Pre setup</h3>
+      <p>
+        Because this requires node, and my version on this laptop was very old I
+        needed to update. The following got me up to node v24 (I did already
+        have node and nvm installed)
+      </p>
+      <pre>
+        <code>
+nvm install --lts
+nvm alias default 'lts/*'
+nvm use default
+        </code>
+      </pre>
+      <h3>install</h3>
+      <p>
+        Run <code>npx html-validate --init</code> to install and setup the
+        default <code>.htmlvalidate.json</code> file
+      </p>
+      <p>
+        I only chose the default and markdown rules (in case I decide in the
+        future to go back to generating webpages through markdown). Afterwards I
+        ran
+        <code>npx html-validate .</code> to confirm it would run against the
+        local files and detect failures (it does, I've been very sloppy).
+      </p>
+      <p>
+        In order to get it installed in vscode, I ran 'ext install
+        html-validate.vscode-html-validate' (cmd+p)
+        <a href="https://html-validate.org/usage/vscode.html"
+          >https://html-validate.org/usage/vscode.html</a
+        >
+        had the instructions
+      </p>
+      <p>
+        Now this left me with a problem, I already have prettier installed, and
+        some of the rules do conflict with what prettier thinks is correct
+        (lowercase vs uppercase DOCTYPE for example).
+      </p>
+      <p>
+        Disabling prettier for html files is the quickest way to deal with that
+        type of thing so I added a new <code>.prettierignore</code> file with
+        <code>*.html</code>, but now formatting the file on save wasn't doing
+        anything (so I could end up with non-matching indentation for opening
+        and closing brackets for html files) - what to do...
+      </p>
+      <p>
+        I next tried adjusting the vscode settings.json file, thinking maybe
+        switching the html formatter back to vscode default instead of prettier
+        was the right move. so changing:
+      </p>
+      <pre>
+        <code>
+"[html]": {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+}
+        </code>
+      </pre>
+      <p>to</p>
+      <pre>
+        <code>
+"[html]": {
+  "editor.defaultFormatter": "vscode.html-language-features",
+  "editor.formatOnSave": true,
+}
+        </code>
+      </pre>
+      <p>
+        but this didn't work when trying it out, so set it back to
+        prettier-vscode
+      </p>
+      <p>
+        after more googling, discovered that I could add a set of rules to the
+        <code>.htmlvalidate</code> file to avoid this issue
+      </p>
+      <pre>
+        <code>
+{
+  "extends": [
+    "html-validate:recommended",
+    "html-validate:prettier"
+  ]
+}
+        </code>
+      </pre>
+      <p>
+        this also allowed me to get rid of the <code>.prettierignore</code> file
+        completely, and keep both the formatting on code save and these new
+        correctness checks
+      </p>
+      <h2>Axe Accessibility Linter</h2>
+      <p>
+        Accessibility is one of those things that I wish I knew more about when
+        making things. It tends to be one of those things that people assume the
+        UI framework will take care of for them already, and so doesn't get as
+        much attention as the endless list of new features that people want to
+        cram in. So I decided to see what this would catch for me.
+      </p>
+      <h3>Install</h3>
+      <p>
+        Download and install
+        <a
+          href="https://marketplace.visualstudio.com/items?itemName=deque-systems.vscode-axe-linter"
+          >deque-systems.vscode-axe-linter</a
+        >
+        in visual studio. Either from the link or through ext install
+      </p>
+      <p>
+        Checked the output logs in visual studio to make sure the install had
+        worked, then added an empty <code>&lt;input&gt;</code> in order to
+        trigger it so I could confirm it was picking things up correctly
+      </p>
+      <h2>Stylelint</h2>
+      <p>
+        CSS is also something which I tend not to stray too far away from
+        whatever framework defaults are, or for more official pages whatever the
+        design layout of whatever my employer uses. Since at least part of the
+        impetus for doing this was to get back to trying to make something more
+        unique that felt like myself (looks, layout and design wise) I decided
+        that this would help make sure that the .css was keeping to some type of
+        consistency
+      </p>
+      <h3>Install</h3>
+      <p>
+        Download and install
+        <a
+          href="https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint"
+          >stylelint.vscode-stylelint</a
+        >
+        either from the link directly or through ext install
+      </p>
+      <p>
+        I could see from the vs code output that this wasn't working out of the
+        box, and reading the
+        <a href="https://stylelint.io/user-guide/get-started/"
+          >linked webpage</a
+        >
+        showed there was some extra setup needed. In summary:
+      </p>
+      <p>
+        create the <code>stylelint.config.mjs</code> file with the following
+        contents:
+      </p>
+      <pre>
+        <code>
+/** @type {import('stylelint').Config} */
+export default {
+  extends: ["stylelint-config-standard"]
+};
+        </code>
+      </pre>
+      <p>run <code>npm add -D stylelint stylelint-config-standard</code></p>
+      <p>
+        ran <code>npx stylelint "**/*.css"</code> on my folder to see what it
+        would detect (thankfully my css already had some errors it could pick up
+        )
+      </p>
+      <p>
+        There are ways to change the settings in vscode to add extra file types
+        stylecheck would run against, but I decided to keep with the defaults.
+        After restarting vscode it picked up the new .mjs file correctly and
+        started seeing the error lines in vscode
+      </p>
+    </article>
+    <footer>
+      <p>Authored on <time datetime="2026-10-18">2026-10-18</time></p>
+      <p>Updated on <time datetime="2026-10-18">2026-10-18</time></p>
+    </footer>
+  </body>
+</html>
